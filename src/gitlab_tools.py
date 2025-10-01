@@ -70,7 +70,7 @@ async def gitlab_get_template_dag(etl_type: Literal['database_to_datalake', 's3_
         return result
     
     elif etl_type == 's3_to_datalake':
-        with open('templates/database_to_datalake.md', 'r') as f:
+        with open('templates/s3_to_datalake.md', 'r') as f:
             dag_file = f.read()
     
         with open('templates/spark_task_s3.md', 'r') as f:
@@ -102,7 +102,7 @@ async def gitlab_get_template_dag(etl_type: Literal['database_to_datalake', 's3_
         return result
     
     elif etl_type == 'kafka_to_datalake':
-        with open('templates/database_to_datalake.md', 'r') as f:
+        with open('templates/s3_to_datalake.md', 'r') as f:
             dag_file = f.read()
     
         with open('templates/spark_task_kafka.md', 'r') as f:
@@ -153,7 +153,7 @@ async def create_task(
     """
     project: ProjectManager = ctx.request_context.lifespan_context.gitlab_project
 
-    table_header = '| Parameter | Value |\n|:-----------------------| --------------------------------------------------:|\n'
+    table_header = '\n| Parameter | Value |\n|:-----------------------| --------------------------------------------------:|\n'
     descr = task_description + '\n' +table_header + "\n".join(["| %s | %s |" % (item.field,item.value) for item in form_data])
 
     issue_data = {
@@ -164,5 +164,5 @@ async def create_task(
 
     issue = project.issues.create(issue_data)
     
-    url = f'https://gitlab.it-brew-lct2025.ru/-/work_items/{issue.id}'
+    url = f'https://gitlab.it-brew-lct2025.ru/data-engineering/airflow/-/work_items/{issue.id}'
     return f'Task id: {issue.id}, link: {url}'
