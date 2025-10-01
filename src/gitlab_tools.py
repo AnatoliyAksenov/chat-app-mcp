@@ -164,5 +164,5 @@ async def create_task(
 
     issue = project.issues.create(issue_data)
     
-    url = project.web_url + f'/-/work_items/{issue.id}'
+    url = f'https://gitlab.it-brew-lct2025.ru/-/work_items/{issue.id}'
     return f'Task id: {issue.id}, link: {url}'
