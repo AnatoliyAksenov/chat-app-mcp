@@ -1,10 +1,12 @@
 import io
 import os
+import s3fs
 import json
 import zlib
 import httpx
 import base64
 
+from uuid import uuid4
 from fnmatch import fnmatch
 from chardet import detect as chardetect
 from fastmcp import FastMCP
@@ -141,6 +143,23 @@ async def transform_ditaa_to_markdown_image(
     if proxy:
         request_kwargs['proxy'] = proxy
 
+    request_kwargs['timeout'] = 5
+
     resp = httpx.get(f'https://kroki.io/ditaa/png/{q}', **request_kwargs)
     t = resp.content
-    return f'![schema](data:image/png;base64,{base64.b64encode(t).decode("ascii")})'
+
+    try:
+
+        filename = str( uuid4() ) + '.png'
+        url = f'https://info.it-brew-lct2025.ru/images/{filename}'
+        print(filename)
+        
+        
+        resp = httpx.put(url, content=t) 
+        resp.raise_for_status() 
+
+        return f'![schema]({url})'
+    except Exception as e:
+        # send red dot ;(
+        # the best we can do
+        return '![schema](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==)'

@@ -14,6 +14,8 @@ class AppConfig(BaseSettings):
     AIRFLOW_USER: str = Field(..., min_length=1, env="AIRFLOW_USER")
     AIRFLOW_PASSWORD: str = Field(..., min_length=1, env="AIRFLOW_PASSWORD")
 
+    #ADD MINIO
+
     class Config:
         # Extra configuration
         env_file = ".env"  # Optional: load from .env file
