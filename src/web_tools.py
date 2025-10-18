@@ -142,6 +142,7 @@ async def transform_ditaa_to_markdown_image(
     app_conf = ctx.request_context.lifespan_context.config
     proxy = app_conf.USE_PROXY
     kroki = app_conf.KROKI_URL or 'http://10.0.0.100:8008'
+    internal_storage = app_conf.INTERNAL_STORAGE_URL or 'http://localhost:9001'
     storage = app_conf.STORAGE_URL or 'http://localhost:9001'
 
 
@@ -158,12 +159,13 @@ async def transform_ditaa_to_markdown_image(
     try:
 
         filename = str( uuid4() ) + '.png'
-        url = f'{storage}/images/{filename}'
+        url = f'{internal_storage}/images/{filename}'
+        res_url = f'{storage}/images/{filename}'
         
         resp = httpx.put(url, content=t) 
         resp.raise_for_status() 
 
-        return f'![schema]({url})'
+        return f'![schema]({res_url})'
     except Exception as e:
         # send red dot ;(
         # the best we can do
