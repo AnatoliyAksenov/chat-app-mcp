@@ -10,7 +10,6 @@
     ARTIFACT_PATH: "./image.tar"
     HOST_PORT: "8001"
     HTTP_PROXY: "http://10.0.0.7:3128"
-    STORAGE_URL: "http://10.0.0.200:9001"
     KROKI_URL: "http://10.0.0.100:8008"
 
   cleanup:
