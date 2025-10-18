@@ -26,6 +26,10 @@ MCP Сервер является сердцем нашего решения. О
 - прочитать файл или его часть (для текстовых форматов)
 - получить схему для parquet файлов
 
+Основные действия над интернет ресурсами
+- проверить доступность ресурса
+- получить первые 2000 символов ответа ресурса
+
 ## Развертывание сервиса
 
 Наш проект подготовлен для контейнеризации и содержит Dockerfile для сборки образа.
@@ -79,14 +83,13 @@ __Продублировано из репозитория Gitlab Агента__
 - LLM Chat backend: https://github.com/AnatoliyAksenov/chat-app-backend
 - LLM Chat frontend: https://github.com/AnatoliyAksenov/chat-app-frontend
 - Gitlab Agent: https://github.com/AnatoliyAksenov/gitlab-agent
+- Infrastructure: https://github.com/AnatoliyAksenov/it-brew-infra
 
 
 Также, мы подготовили развернутый стенд
 
 
-# Kroki usage
-
-Let't up kroki server:
+# Kroki server
 
 ```
 docker run -p 8008:8000 --name kroki -d yuzutech/kroki
