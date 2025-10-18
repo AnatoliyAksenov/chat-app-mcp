@@ -14,6 +14,11 @@ class AppConfig(BaseSettings):
     AIRFLOW_USER: str = Field(..., min_length=1, env="AIRFLOW_USER")
     AIRFLOW_PASSWORD: str = Field(..., min_length=1, env="AIRFLOW_PASSWORD")
 
+    KROKI_URL: str = Field(..., min_length=1, env="KROKI_URL")
+    STORAGE_URL: str = Field(..., min_length=1, env="STORAGE_URL")
+
+    USE_PROXY: str = Field('', env="USE_PROXY")
+
     #ADD MINIO
 
     class Config:

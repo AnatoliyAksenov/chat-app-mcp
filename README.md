@@ -82,3 +82,18 @@ __Продублировано из репозитория Gitlab Агента__
 
 
 Также, мы подготовили развернутый стенд
+
+
+# Kroki usage
+
+Let't up kroki server:
+
+```
+docker run -p 8008:8000 --name kroki -d yuzutech/kroki
+```
+
+# Minio object storage
+
+```
+docker run -p 9001:9000 --name minio -d minio/minio
+```

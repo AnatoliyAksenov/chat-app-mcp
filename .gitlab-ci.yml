@@ -10,6 +10,8 @@
     ARTIFACT_PATH: "./image.tar"
     HOST_PORT: "8001"
     HTTP_PROXY: "http://10.0.0.7:3128"
+    STORAGE_URL: "http://10.0.0.200:9001"
+    KROKI_URL: "http://10.0.0.100:8008"
 
   cleanup:
     stage: cleanup
@@ -48,7 +50,7 @@
     stage: build
     script:
       - source image_version.txt
-      - docker build --build-arg GITLAB_URL=$GITLAB_URL --build-arg GITLAB_TOKEN=$GITLAB_TOKEN --build-arg PROJECT_PATH=$PROJECT_PATH --build-arg AIRFLOW_URL=$AIRFLOW_URL --build-arg AIRFLOW_USER=$AIRFLOW_USER --build-arg AIRFLOW_PASSWORD=$AIRFLOW_PASSWORD --build-arg HTTP_PROXY=$HTTP_PROXY --build-arg HTTPS_PROXY=$HTTP_PROXY -t lctregistry.cr.cloud.ru/$IMAGE_NAME:$IMAGE_TAG .
+      - docker build --build-arg GITLAB_URL=$GITLAB_URL --build-arg GITLAB_TOKEN=$GITLAB_TOKEN --build-arg PROJECT_PATH=$PROJECT_PATH --build-arg AIRFLOW_URL=$AIRFLOW_URL --build-arg AIRFLOW_USER=$AIRFLOW_USER --build-arg AIRFLOW_PASSWORD=$AIRFLOW_PASSWORD --build-arg KROKI_URL=$KROKI_URL --build-arg STORAGE_URL=$STORAGE_URL --build-arg HTTP_PROXY=$HTTP_PROXY --build-arg HTTPS_PROXY=$HTTP_PROXY -t lctregistry.cr.cloud.ru/$IMAGE_NAME:$IMAGE_TAG .
       - docker push lctregistry.cr.cloud.ru/$IMAGE_NAME:$IMAGE_TAG
     dependencies:
       - generate-image-version

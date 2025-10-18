@@ -9,7 +9,7 @@ import base64
 from uuid import uuid4
 from fnmatch import fnmatch
 from chardet import detect as chardetect
-from fastmcp import FastMCP
+from fastmcp import FastMCP, Context
 
 from pydantic import BaseModel, Field
 from typing import Optional, Literal
@@ -90,7 +90,8 @@ async def get_link_sample(
 
 @mcp.tool 
 async def transform_ditaa_to_markdown_image(
-    ditaa_scheme:str = Field(..., description="Ditaa scheme")
+    ditaa_scheme:str = Field(..., description="Ditaa scheme"),
+    ctx:Context = None
 ) -> str:
     """
     This tool is for transform Ditaa scheme to markdown image.
@@ -137,7 +138,13 @@ async def transform_ditaa_to_markdown_image(
 
     """
     q = base64.urlsafe_b64encode(zlib.compress(ditaa_scheme.encode('utf-8'), 9)).decode('ascii')
-    proxy = os.environ.get('USE_PROXY')
+
+    app_conf = ctx.request_context.lifespan_context.config
+    proxy = app_conf.USE_PROXY
+    kroki = app_conf.KROKI_URL or 'http://10.0.0.100:8008'
+    storage = app_conf.STORAGE_URL or 'http://localhost:9001'
+
+
 
     request_kwargs = {}
     if proxy:
@@ -145,15 +152,13 @@ async def transform_ditaa_to_markdown_image(
 
     request_kwargs['timeout'] = 5
 
-    resp = httpx.get(f'https://kroki.io/ditaa/png/{q}', **request_kwargs)
+    resp = httpx.get(f'{kroki}/ditaa/png/{q}', **request_kwargs)
     t = resp.content
 
     try:
 
         filename = str( uuid4() ) + '.png'
-        url = f'https://info.it-brew-lct2025.ru/images/{filename}'
-        print(filename)
-        
+        url = f'{storage}/images/{filename}'
         
         resp = httpx.put(url, content=t) 
         resp.raise_for_status() 
